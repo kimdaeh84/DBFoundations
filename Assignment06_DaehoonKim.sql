@@ -231,13 +231,15 @@ Select * From vProducts;
 Go
 */
 
-Create View vCategoryandProductName As
+Create View vCategoryandProductName 
+With SchemaBinding
+As
 Select
 	CategoryName, 
 	ProductName,
 	UnitPrice
-From vProducts as P
-Join vCategories as C
+From dbo.vProducts as P
+Join dbo.vCategories as C
 	On P.CategoryID = C.CategoryID;
 Go
 
@@ -262,13 +264,15 @@ Select * From vInventories;
 Go
 */
 
-Create View vInventoryandCountDate As
+Create View vInventoryandCountDate 
+With SchemaBinding 
+As
 Select
 	ProductName,
 	InventoryDate,
 	[COUNT]
-From vInventories as I
-Join vProducts as P 
+From dbo.vInventories as I
+Join dbo.vProducts as P 
 	On I.ProductID = P.ProductID;
 Go
 
@@ -292,12 +296,14 @@ Select * From vInventories;
 Go
 */
 
-Create View vEmployeeInventoryCount As
+Create View vEmployeeInventoryCount 
+With SchemaBinding
+As
 Select Distinct
 	InventoryDate,
 	EmployeeFirstName + ' ' + EmployeeLastName as EmployeeName 
-From vEmployees as E
-Join vInventories as I
+From dbo.vEmployees as E
+Join dbo.vInventories as I
 	On E.EmployeeID = I.EmployeeID;
 Go
 
@@ -322,16 +328,18 @@ Select * From vInventories;
 Go
 */
 
-Create View vCategoryProductInventoryCountDate As
+Create View vCategoryProductInventoryCountDate 
+With SchemaBinding
+As
 Select 
 	CategoryName, 
 	ProductName, 
 	InventoryDate,
 	[COUNT]
-From vCategories as C 
-Join vProducts as P
+From dbo.vCategories as C 
+Join dbo.vProducts as P
 	On C.CategoryID = P.CategoryID
-Join vInventories as I
+Join dbo.vInventories as I
 	On P.ProductID = I.ProductID;
 Go
 
@@ -356,19 +364,21 @@ Select * From vInventories;
 Go
 */
 
-Create View vComprehensiveEmployeeCount As 
+Create View vComprehensiveEmployeeCount 
+With SchemaBinding
+As 
 Select 
 	CategoryName,
 	ProductName,
 	InventoryDate,
 	[Count],
 	EmployeeFirstName + ' ' + EmployeeLastName as EmployeeName 
-From vCategories as C
-Join vProducts as P
+From dbo.vCategories as C
+Join dbo.vProducts as P
 	On C.CategoryID = P.CategoryID
-Join vInventories as I
+Join dbo.vInventories as I
 	On P.ProductID = I.ProductID
-Join vEmployees as E 
+Join dbo.vEmployees as E 
 	On I.EmployeeID = E.EmployeeID;
 Go
 
@@ -394,19 +404,21 @@ Select * from vEmployees
 Go
 */
 
-Create View vComprehensiveCountForChaiandChang As 
+Create View vComprehensiveCountForChaiandChang 
+With SchemaBinding
+As 
 Select 
 	CategoryName,
 	ProductName,
 	InventoryDate,
 	[Count],
 	EmployeeFirstName + ' ' + EmployeeLastName as EmployeeName 
-From vCategories as C
-Join vProducts as P
+From dbo.vCategories as C
+Join dbo.vProducts as P
 	On C.CategoryID = P.CategoryID
-Join vInventories as I
+Join dbo.vInventories as I
 	On P.ProductID = I.ProductID
-Join vEmployees as E 
+Join dbo.vEmployees as E 
 	On I.EmployeeID = E.EmployeeID
 Where P.ProductName In ('Chai', 'Chang');
 Go
@@ -431,12 +443,14 @@ Select * From vInventories;
 Go
 */
 
-Create View vEmployeeManager As 
+Create View vEmployeeManager 
+With SchemaBinding
+As 
 Select 
 	Mgr.EmployeeFirstName + ' ' + Mgr.EmployeeLastName as 'Manager Name', 
 	Emp.EmployeeFirstName + ' ' + emp.EmployeeLastName as 'Employee Name'
-From vEmployees as Mgr
-Join vEmployees as Emp
+From dbo.vEmployees as Mgr
+Join dbo.vEmployees as Emp
 	On  Mgr.EmployeeID = Emp.ManagerID;
 Go
 
@@ -460,7 +474,9 @@ Select * from vEmployees
 Go
 */
 
-Create View vInventoriesByProductsByCategoriesByEmployees As 
+Create View vInventoriesByProductsByCategoriesByEmployees 
+With SchemaBinding
+As 
 Select 
 	C.CategoryID,
 	CategoryName,
@@ -473,14 +489,14 @@ Select
 	E.EmployeeID,
 	E.EmployeeFirstName + ' ' + E.EmployeeLastName as 'Employee Name',
 	M.EmployeeFirstName + ' ' + M.EmployeeLastName as 'Manager Name'
-From vCategories as C
-Join vProducts as P
+From dbo.vCategories as C
+Join dbo.vProducts as P
 	On C.CategoryID = P.CategoryID
-Join vInventories as I
+Join dbo.vInventories as I
 	On P.ProductID = I.ProductID
-Join vEmployees as E 
+Join dbo.vEmployees as E 
 	On I.EmployeeID = E.EmployeeID
-Join vEmployees as M
+Join dbo.vEmployees as M
 	On M.EmployeeID = E.ManagerID;
 Go
 
@@ -493,10 +509,10 @@ Select * from vInventoriesByProductsByCategoriesByEmployees Order By CategoryID,
 -- 1,Beverages,1,Chai,18.00,155,2017-03-01,54,9,Anne Dodsworth,Steven Buchanan
 
 -- Test your Views (NOTE: You must change the names to match yours as needed!)
-Select * From vCategories
-Select * From vProducts
-Select * From vInventories
-Select * From vEmployees
+Select * From dbo.vCategories
+Select * From dbo.vProducts
+Select * From dbo.vInventories
+Select * From dbo.vEmployees
 
 Select * From vCategoryandProductName 
 Select * from vInventoryandCountDate 
